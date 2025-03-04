@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import BlogArticleComponent from '@/components/BlogArticle'
+import BlogArticleComponent from '@/components/BlogArticle.vue'
 import {useRoute,useRouter} from 'vue-router'
 import { computed } from 'vue'
 import { useBlogArticleStore } from '@/stores/blog'

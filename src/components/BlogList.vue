@@ -24,7 +24,7 @@
 import { useBlogArticleStore } from '@/stores/blog'
 import { useAppStore } from '@/stores/app'
 import { useDisplay } from 'vuetify'
-import BlogArticleComponent from '@/components/BlogArticle'
+import BlogArticleComponent from '@/components/BlogArticle.vue'
 
 const { mobile } = useDisplay()
 

@@ -14,8 +14,6 @@ declare module 'vue' {
     BlogList: typeof import('./components/BlogList.vue')['default']
     ComponentDialog: typeof import('./components/ComponentDialog.vue')['default']
     ConfirmDialog: typeof import('./components/ConfirmDialog.vue')['default']
-    copy: typeof import('./components/BlogEdit copy.vue')['default']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

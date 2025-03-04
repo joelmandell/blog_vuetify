@@ -14,7 +14,7 @@
       <div v-else-if="model?.length == 0">
         <h3>No blog articles created yet. </h3>
         <p>
-          Why don't you go ahead and <span class="text-decoration-underline" @click="appStore.showDialog('../components/BlogCreate', {fullscreen:true})">create</span> one? Tell the world 🏞️
+          Why don't you go ahead and <span class="text-decoration-underline" @click="appStore.showDialog('BlogCreate', {fullscreen:true})">create</span> one? Tell the world 🏞️
         </p>
       </div>
     </v-col>
@@ -36,7 +36,7 @@ const appStore = useAppStore()
 const articleStore = useBlogArticleStore()
 
 const editArticle = (article: BlogArticle) => {
-    appStore.showDialog("../components/BlogEdit",{article,fullscreen:mobile.value,dialogWidth:480})
+    appStore.showDialog("BlogEdit",{article,fullscreen:mobile.value,dialogWidth:480})
 }
 
 const deleteArticle = (article: BlogArticle) => {

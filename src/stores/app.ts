@@ -1,5 +1,6 @@
 // src/stores/app.ts
 import { defineStore } from 'pinia'
+import { AsyncComponentLoader } from 'vue'
 
 const APP_STORE_KEY='app'
 
@@ -8,12 +9,25 @@ export const useAppStore = defineStore(APP_STORE_KEY, {
     return ({
       componentInUse:false,
       currentComponent: null,
-      props:{}
+      props:{},
+      cachedModules: {} as any,
+      allModules: null as any,
     })
   },
   actions: {
     async showDialog(type: string, props: any = {}, resolvePromise = false) {
-      this.currentComponent = markRaw(defineAsyncComponent(() => import( /* @vite-ignore */ `${type}.vue`)))
+      const path = `../components/${type}.vue`
+
+      if(this.allModules == null)
+        this.allModules = import.meta.glob('../components/*.vue')
+
+      if(!this.cachedModules[type])
+      {
+        const moduleToUse = this.allModules[path]
+        this.cachedModules[type] = markRaw(defineAsyncComponent(() => moduleToUse() as any | null) as AsyncComponentLoader) 
+      }    
+
+      this.currentComponent = this.cachedModules[type] 
       this.componentInUse = true
       this.props = props
 

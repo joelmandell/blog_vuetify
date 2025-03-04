@@ -56,7 +56,7 @@ export const useBlogArticleStore = defineStore(BLOG_STORE_KEY, {
 
     async deleteArticle({title,id}: BlogArticle | undefined = {title:"",id:"",author:"",date:undefined, text:""}) {
       const appStore = useAppStore()
-      const result = (await appStore.showDialog("../components/ConfirmDialog", 
+      const result = (await appStore.showDialog("ConfirmDialog", 
                         { title:"Deleting blog article", 
                           text:`Do you really want to delete the blog article with name "${title}"?`, 
                           persistent:true,

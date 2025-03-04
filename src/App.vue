@@ -3,7 +3,7 @@
     <v-app>
       <v-app-bar>
         <v-toolbar-title><v-btn variant="plain" to="/">Cat blog with Vuetify</v-btn></v-toolbar-title>
-        <v-btn @click="appStore.showDialog('../components/BlogCreate',{fullscreen:mobile, dialogWidth:480})" elevation="10" color="primary">
+        <v-btn @click="appStore.showDialog('BlogCreate',{fullscreen:mobile, dialogWidth:480})" elevation="10" color="primary">
           <v-icon >mdi-plus</v-icon>
           New blog article
         </v-btn>

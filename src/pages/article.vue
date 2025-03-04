@@ -27,7 +27,7 @@ const articleStore = useBlogArticleStore()
 const article = computed<BlogArticle|undefined>(() => articleStore.getArticle(id.value))
 
 const editArticle = (article: BlogArticle | undefined) => {
-    appStore.showDialog("../components/BlogEdit",{article,fullscreen:mobile.value,dialogWidth:480})
+    appStore.showDialog("BlogEdit",{article,fullscreen:mobile.value,dialogWidth:480})
 }
 
 const deleteArticle = (article: BlogArticle | undefined) => {

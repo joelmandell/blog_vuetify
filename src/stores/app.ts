@@ -1,22 +1,17 @@
 // src/stores/app.ts
 import { defineStore } from 'pinia'
 
-// const router = useRouter();
-
-// router.beforeEach((to) => {
-//   console.log("HELLO ROUTE FROM APP STORE")
-// })
 export const useAppStore = defineStore('app', {
   state: () => {
     return ({
       componentInUse:false,
-      currentComponent: "",
+      currentComponent: null,
       props:{}
     })
   },
   actions: {
-    showDialog(type: string, props: any = {}) {
-      this.currentComponent = type;
+    async showDialog(type: string, props: any = {}) {
+      this.currentComponent = markRaw(defineAsyncComponent(() => import( /* @vite-ignore */ `${type}.vue`)));
       this.componentInUse = true;
       this.props = props
     },

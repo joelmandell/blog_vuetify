@@ -15,9 +15,9 @@
               ></v-text-field>
 
               <v-textarea
-                v-model="newArticle.content"
-                :rules="contentRules"
-                label="Content"
+                v-model="newArticle.text"
+                :rules="textRules"
+                label="Text"
                 outlined
                 dense
                 required
@@ -41,8 +41,8 @@
                 dense 
                 required
               ></v-text-field>
-
-              <v-btn :disabled="!validForm" color="primary" @click="addArticle">Add Article</v-btn>
+              <v-spacer />
+              <v-btn color="primary" @click="addArticle">Add Article</v-btn>
               <v-btn color="secondary" @click="actionHide()" class="ml-2">Cancel</v-btn>
             </v-form>
           </v-card-text>
@@ -64,8 +64,8 @@ const titleRules = [
   (v: string) => (v && v.length <= 100) || 'Title must be less than 100 characters',
 ];
 
-const contentRules = [
-  (v: string) => !!v || 'Content is required',
+const textRules = [
+  (v: string) => !!v || 'Text is required',
 ];
 
 const authorRules = [
@@ -74,7 +74,7 @@ const authorRules = [
 ];
 
 const dateRules = [
-  (v: string) => !!v || 'Date is required',
+  (v: string) => (!!v || v == typeof undefined) || 'Date is required',
 ];
 
 const form = ref<VForm | null>(null); 
@@ -83,13 +83,19 @@ const validForm = ref(true);
 const newArticle = ref<BlogArticle>({
   id:'',
   title: '',
-  content: '',
+  text: '',
   author: '',
-  date: new Date()
+  date: undefined
 });
 
-const addArticle = () => {
-  if (newArticle.value.title.trim() && newArticle.value.content.trim()) {
+const addArticle = async () => {
+  const { valid } = await form.value?.validate() ?? {valid:false}; 
+  validForm.value = valid;
+  
+  if(!valid)
+    return;
+
+  if (newArticle.value.title.trim() && newArticle.value.text.trim()) {
     articleStore.addArticle(newArticle.value);
   }
 

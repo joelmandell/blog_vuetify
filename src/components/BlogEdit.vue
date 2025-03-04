@@ -15,9 +15,9 @@
             ></v-text-field>
 
             <v-textarea
-              v-model="editingArticle.content"
-              :rules="contentRules"
-              label="Content"
+              v-model="editingArticle.text"
+              :rules="textRules"
+              label="Text"
               outlined
               dense
               required
@@ -42,7 +42,7 @@
               required
             ></v-text-field>
 
-            <v-btn color="primary" :disabled="!validForm" @click="saveEditedArticle">Save Changes</v-btn>
+            <v-btn color="primary" @click="saveEditedArticle">Save Changes</v-btn>
             <v-btn color="secondary" @click="cancelEdit" class="ml-2">Cancel</v-btn>
           </v-form>
         </v-card-text>
@@ -60,8 +60,8 @@ const titleRules = [
   (v: string) => (v && v.length <= 100) || 'Title must be less than 100 characters',
 ];
 
-const contentRules = [
-  (v: string) => !!v || 'Content is required',
+const textRules = [
+  (v: string) => !!v || 'Text is required',
 ];
 
 const authorRules = [
@@ -70,7 +70,7 @@ const authorRules = [
 ];
 
 const dateRules = [
-  (v: string) => !!v || 'Date is required',
+  (v: string) => (!!v || v == typeof undefined) || 'Date is required',
 ];
 
 const form = ref<VForm | null>(null); 
@@ -84,6 +84,7 @@ const editingArticle = ref(JSON.parse(JSON.stringify(attrs["article"] ?? "{}")) 
 
 const saveEditedArticle = async () => {
   const { valid } = await form.value?.validate() ?? {valid:false}; 
+  validForm.value = valid;
 
   if(!valid)
     return;

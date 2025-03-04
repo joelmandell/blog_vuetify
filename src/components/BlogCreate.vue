@@ -1,54 +1,54 @@
 <template>
-<v-row>
-      <v-col cols="12">
-        <v-card>
-          <v-card-title class="headline">Create Article</v-card-title>
-          <v-card-text>
-            <v-form ref="form" v-model="validForm" lazy-validation>
-              <v-text-field
-                v-model="newArticle.title"
-                :rules="titleRules"
-                label="Title"
-                outlined
-                dense
-                required
-              ></v-text-field>
+  <v-row>
+    <v-col cols="12">
+      <v-card>
+        <v-card-title class="headline">Create Article</v-card-title>
+        <v-card-text>
+          <v-form ref="form" v-model="validForm" lazy-validation>
+            <v-text-field
+              v-model="newArticle.title"
+              :rules="titleRules"
+              label="Title"
+              outlined
+              dense
+              required
+            ></v-text-field>
 
-              <v-textarea
-                v-model="newArticle.text"
-                :rules="textRules"
-                label="Text"
-                outlined
-                dense
-                required
-              ></v-textarea>
+            <v-textarea
+              v-model="newArticle.text"
+              :rules="textRules"
+              label="Text"
+              outlined
+              dense
+              required
+            ></v-textarea>
 
-              <v-text-field
-                v-model="newArticle.author"
-                :rules="authorRules"
-                label="Author"
-                outlined
-                dense
-                required
-              ></v-text-field>
+            <v-text-field
+              v-model="newArticle.author"
+              :rules="authorRules"
+              label="Author"
+              outlined
+              dense
+              required
+            ></v-text-field>
 
-              <v-text-field 
-                type="date" 
-                v-model="newArticle.date" 
-                :rules="dateRules"
-                label="Date" 
-                outlined 
-                dense 
-                required
-              ></v-text-field>
-              <v-spacer />
-              <v-btn color="primary" @click="addArticle">Add Article</v-btn>
-              <v-btn color="secondary" @click="actionHide()" class="ml-2">Cancel</v-btn>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+            <v-text-field 
+              type="date" 
+              v-model="newArticle.date" 
+              :rules="dateRules"
+              label="Date" 
+              outlined 
+              dense 
+              required
+            ></v-text-field>
+            <v-spacer />
+            <v-btn color="primary" @click="addArticle">Add Article</v-btn>
+            <v-btn color="secondary" @click="actionHide()" class="ml-2">Cancel</v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 <script setup lang="ts">
 import { useAttrs } from 'vue'

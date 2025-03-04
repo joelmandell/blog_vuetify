@@ -2,7 +2,7 @@
 
 <v-row>
     <v-col cols="12" md="12" offset-md="0">
-        <v-card class="mb-4" elevation="2" v-intersect="{
+        <v-card v-if="article" class="mb-4" elevation="2" v-intersect="{
             handler: onIntersect,
         }">
             <v-img
@@ -26,7 +26,7 @@
                 By {{ article.author }} on {{ formatDate(article.date) }}
             </v-card-subtitle>
             <v-card-text>
-                {{ article.text }}
+                {{ visibleTextLength == null ? article.text : `${article.text.substring(0,visibleTextLength)}...` }}
             </v-card-text>
             <v-card-actions class="mt-n2">
                 <slot name="actions">
@@ -37,9 +37,14 @@
 </v-row>
 </template>
 <script setup lang="ts">
-import { defineProps } from 'vue'
+const {article,visibleTextLength} = defineProps({
+    article: Object as PropType<BlogArticle>,
+    visibleTextLength: {
+        type: [Number,null],
+        default: null
+    }
+})
 
-const {article} = defineProps(["article"])
 const image = ref<string|undefined>(undefined)
 
 async function fetchCatImage() {
@@ -71,7 +76,7 @@ const onIntersect = async (intersecting: boolean, entries: IntersectionObserverE
     if(intersecting && (image.value == undefined)) image.value = await fetchCatImage()
 }
 
-const formatDate = (date: Date | string) => {
-  return new Date(date).toLocaleDateString()
+const formatDate = (date: Date | string | undefined) => {
+  return new Date(date ?? Date.now()).toLocaleDateString()
 }
 </script>

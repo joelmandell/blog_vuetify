@@ -39,6 +39,10 @@ export const useBlogArticleStore = defineStore(BLOG_STORE_KEY, {
       this.blogArticles.push({ ...article, id: generateUuidV4() })
     },
 
+    getArticle(id:string | undefined) : BlogArticle | undefined {
+      return this.blogArticles.find((item: BlogArticle) => item.id == id)
+    },
+
     getArticles() {
       return this.blogArticles
     },
@@ -50,14 +54,14 @@ export const useBlogArticleStore = defineStore(BLOG_STORE_KEY, {
       }
     },
 
-    async deleteArticle({title,id}: BlogArticle) {
+    async deleteArticle({title,id}: BlogArticle | undefined = {title:"",id:"",author:"",date:undefined, text:""}) {
       const appStore = useAppStore()
       const result = (await appStore.showDialog("../components/ConfirmDialog", 
-            { title:"Deleting blog article", 
-              text:`Do you really want to delete the blog article with name "${title}"?`, 
-              persistent:true,
-              dialogWidth:400,
-            }, true)) as boolean
+                        { title:"Deleting blog article", 
+                          text:`Do you really want to delete the blog article with name "${title}"?`, 
+                          persistent:true,
+                          dialogWidth:400,
+                        }, true)) as boolean
 
       if(result) {
         this.blogArticles = this.blogArticles.filter(article => article.id !== id)

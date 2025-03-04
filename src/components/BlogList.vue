@@ -4,10 +4,11 @@
 
           <!--I reckon there could be an option prop to decide wich component to use like cardlist or expanded list and so on.... for now just a simple bool ListArticles-->
           <template v-if="ListArticles" :key="item.id" v-for="item in model">
-              <BlogArticleComponent :article="item">
+              <BlogArticleComponent :visibleTextLength="150" :article="item">
                 <template #actions>
-                  <v-btn color="primary" @click="editArticle(item)">Edit <v-icon>mdi-pen</v-icon></v-btn>
-                  <v-btn color="secondary" @click="deleteArticle(item)">Delete <v-icon>mdi-delete</v-icon></v-btn>
+                  <v-btn color="primary" :to="`/article?id=${item.id}`"><v-icon>mdi-newspaper-variant-outline</v-icon> Read</v-btn>
+                  <v-btn color="primary" @click="editArticle(item)"><v-icon>mdi-pen</v-icon> Edit</v-btn>
+                  <v-btn color="secondary" @click="deleteArticle(item)"><v-icon>mdi-delete</v-icon> Delete</v-btn>
                 </template>
               </BlogArticleComponent>
           </template>

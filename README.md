@@ -5,6 +5,12 @@ what seemed to be the latest version that had that naming for preset. So I went 
 
 In order to get away with dart sass 2.0 deprecation warnings I did some changes to vite.config.mts (according to https://vuetifyjs.com/en/features/sass-variables/#build-performance and issues on github).
 
+Other things to note is that I did not use any auth or backend code or any cloud provider like supabase for persisting it to a database. I might do an separate branch for that
+at before march 9th if I want to use more time for this, like making sure that this project could be perhaps more maintenable and so on. 
+Perhaps some visual changes also for the ui.
+
+There were some custom CSS that was added from the "Essential Preset", but it should be removed now so it adheres to the requirements.
+
 ### Starting the Development Server
 
 To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):

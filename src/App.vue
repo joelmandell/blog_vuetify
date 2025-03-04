@@ -8,15 +8,8 @@
           New blog article
         </v-btn>
       </v-app-bar>
-
-      <v-navigation-drawer>
-        <v-list>
-          <v-list-item title="Navigation drawer"></v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-
       <v-main>
-        <v-container>
+        <v-container fluid>
           <router-view />
         </v-container>
       </v-main>
@@ -28,6 +21,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia'
   import { useAppStore } from '@/stores/app';
+  
   const appStore = useAppStore();
   const {componentInUse} = storeToRefs(appStore);
   const component = computed(() => appStore.getCurrentComponent());

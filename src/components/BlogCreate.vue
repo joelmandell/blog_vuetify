@@ -4,25 +4,47 @@
         <v-card>
           <v-card-title class="headline">Create Article</v-card-title>
           <v-card-text>
-            <v-text-field
-              v-model="newArticle.title"
-              label="Title"
-              outlined
-              dense
-            ></v-text-field>
-            <v-textarea
-              v-model="newArticle.content"
-              label="Text"
-              outlined
-              dense
-            ></v-textarea>
-            <v-text-field
-              v-model="newArticle.author"
-              label="Author"
-              outlined
-              dense
-            ></v-text-field>
-            <v-btn color="primary" @click="addArticle">Add Article</v-btn>
+            <v-form ref="form" v-model="validForm" lazy-validation>
+              <v-text-field
+                v-model="newArticle.title"
+                :rules="titleRules"
+                label="Title"
+                outlined
+                dense
+                required
+              ></v-text-field>
+
+              <v-textarea
+                v-model="newArticle.content"
+                :rules="contentRules"
+                label="Content"
+                outlined
+                dense
+                required
+              ></v-textarea>
+
+              <v-text-field
+                v-model="newArticle.author"
+                :rules="authorRules"
+                label="Author"
+                outlined
+                dense
+                required
+              ></v-text-field>
+
+              <v-text-field 
+                type="date" 
+                v-model="newArticle.date" 
+                :rules="dateRules"
+                label="Date" 
+                outlined 
+                dense 
+                required
+              ></v-text-field>
+
+              <v-btn :disabled="!validForm" color="primary" @click="addArticle">Add Article</v-btn>
+              <v-btn color="secondary" @click="actionHide()" class="ml-2">Cancel</v-btn>
+            </v-form>
           </v-card-text>
         </v-card>
       </v-col>
@@ -31,14 +53,37 @@
 <script setup lang="ts">
 import { useAttrs } from 'vue'
 import { useBlogArticleStore } from '@/stores/blog';
+import { VForm } from 'vuetify/components';
 
 const attrs = useAttrs()
 const articleStore = useBlogArticleStore();
-const actionHide = attrs["actionHide"];
+const actionHide = attrs["actionHide"] as Function;
 
-const newArticle = ref<Omit<BlogArticle, 'id'>>({
+const titleRules = [
+  (v: string) => !!v || 'Title is required',
+  (v: string) => (v && v.length <= 100) || 'Title must be less than 100 characters',
+];
+
+const contentRules = [
+  (v: string) => !!v || 'Content is required',
+];
+
+const authorRules = [
+  (v: string) => !!v || 'Author is required',
+  (v: string) => (v && v.length <= 50) || 'Author must be less than 50 characters',
+];
+
+const dateRules = [
+  (v: string) => !!v || 'Date is required',
+];
+
+const form = ref<VForm | null>(null); 
+const validForm = ref(true);
+
+const newArticle = ref<BlogArticle>({
+  id:'',
   title: '',
-  text: '',
+  content: '',
   author: '',
   date: new Date()
 });
@@ -46,7 +91,6 @@ const newArticle = ref<Omit<BlogArticle, 'id'>>({
 const addArticle = () => {
   if (newArticle.value.title.trim() && newArticle.value.content.trim()) {
     articleStore.addArticle(newArticle.value);
-    newArticle.value = { title: '', content: '', author: '' }; // Reset form
   }
 
   if(actionHide) actionHide();

@@ -15,9 +15,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  console.log(to)
   const store = useAppStore();
-  console.log(store)
 })
 
 export default router

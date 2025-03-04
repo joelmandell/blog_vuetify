@@ -1,7 +1,7 @@
 // src/stores/app.ts
 import { defineStore } from 'pinia'
 
-const APP_STORE_KEY='app';
+const APP_STORE_KEY='app'
 
 export const useAppStore = defineStore(APP_STORE_KEY, {
   state: () => {
@@ -13,24 +13,24 @@ export const useAppStore = defineStore(APP_STORE_KEY, {
   },
   actions: {
     async showDialog(type: string, props: any = {}, resolvePromise = false) {
-      this.currentComponent = markRaw(defineAsyncComponent(() => import( /* @vite-ignore */ `${type}.vue`)));
-      this.componentInUse = true;
+      this.currentComponent = markRaw(defineAsyncComponent(() => import( /* @vite-ignore */ `${type}.vue`)))
+      this.componentInUse = true
       this.props = props
 
       if(resolvePromise)
       {
-        props.resolverFunction = null;
+        props.resolverFunction = null
         const myPromise = new Promise((resolve, reject) => {
-          props.resolverFunction = resolve;
+          props.resolverFunction = resolve
         })
 
-        const resolvedValue = await myPromise;
+        const resolvedValue = await myPromise
 
         //Reset after promise resolving
-        this.componentInUse = false;
-        this.currentComponent = null;
+        this.componentInUse = false
+        this.currentComponent = null
 
-        return resolvedValue;
+        return resolvedValue
       }
     },
     getCurrentComponent() {

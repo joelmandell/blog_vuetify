@@ -52,51 +52,51 @@
 </template>
 <script setup lang="ts">
 import { useAttrs } from 'vue'
-import { useBlogArticleStore } from '@/stores/blog';
-import { VForm } from 'vuetify/components';
+import { useBlogArticleStore } from '@/stores/blog'
+import { VForm } from 'vuetify/components'
 
 const titleRules = [
   (v: string) => !!v || 'Title is required',
   (v: string) => (v && v.length <= 100) || 'Title must be less than 100 characters',
-];
+]
 
 const textRules = [
   (v: string) => !!v || 'Text is required',
-];
+]
 
 const authorRules = [
   (v: string) => !!v || 'Author is required',
   (v: string) => (v && v.length <= 50) || 'Author must be less than 50 characters',
-];
+]
 
 const dateRules = [
   (v: string) => (!!v || v == typeof undefined) || 'Date is required',
-];
+]
 
-const form = ref<VForm | null>(null); 
-const validForm = ref(true);
+const form = ref<VForm | null>(null)
+const validForm = ref(true)
 const attrs = useAttrs()
-const articleStore = useBlogArticleStore();
+const articleStore = useBlogArticleStore()
 
-const actionHide = attrs["actionHide"] as Function;
+const actionHide = attrs["actionHide"] as Function
 
-const editingArticle = ref(JSON.parse(JSON.stringify(attrs["article"] ?? "{}")) as BlogArticle);
+const editingArticle = ref(JSON.parse(JSON.stringify(attrs["article"] ?? "{}")) as BlogArticle)
 
 const saveEditedArticle = async () => {
-  const { valid } = await form.value?.validate() ?? {valid:false}; 
-  validForm.value = valid;
+  const { valid } = await form.value?.validate() ?? {valid:false}
+  validForm.value = valid
 
   if(!valid)
-    return;
+    return
 
   if (editingArticle.value) {
-    articleStore.updateArticle(editingArticle.value);
+    articleStore.updateArticle(editingArticle.value)
   }
 
-  if(actionHide) actionHide();
-};
+  if(actionHide) actionHide()
+}
 
 const cancelEdit = () => {
-  if(actionHide) actionHide();
-};
+  if(actionHide) actionHide()
+}
 </script>

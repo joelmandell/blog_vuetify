@@ -37,42 +37,41 @@
 </v-row>
 </template>
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps } from 'vue'
 
 const {article} = defineProps(["article"])
-const image = ref<string|undefined>(undefined);
+const image = ref<string|undefined>(undefined)
 
 async function fetchCatImage() {
     try {
-        const apiKey = 'live_jJP9YtrzCCExi84VcEjMhuEIKa8tB0suoAe6t1vgkzbFevLXZojHZJnjaq06xGr8';
-        const apiUrl =  'https://api.thecatapi.com/v1/images/search';
+        const apiKey = 'live_jJP9YtrzCCExi84VcEjMhuEIKa8tB0suoAe6t1vgkzbFevLXZojHZJnjaq06xGr8'
+        const apiUrl =  'https://api.thecatapi.com/v1/images/search'
 
         const response = await fetch(apiUrl, {
             headers: {
                 'x-api-key': apiKey // Include the API key in the headers if required
             }
-        });
+        })
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status}`)
         }
 
-        const data = await response.json();
+        const data = await response.json()
 
-        return data[0].url;
+        return data[0].url
 
     } catch (error) {
-       // console.error('Error fetching cat image:', error);
     }
-    return undefined;
+    return undefined
 }
 
 const onIntersect = async (intersecting: boolean, entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     //Fetch if interseting and if image is not already set.
-    if(intersecting && (image.value == undefined)) image.value = await fetchCatImage();
+    if(intersecting && (image.value == undefined)) image.value = await fetchCatImage()
 }
 
 const formatDate = (date: Date | string) => {
-  return new Date(date).toLocaleDateString(); // Format date for display
-};
+  return new Date(date).toLocaleDateString()
+}
 </script>

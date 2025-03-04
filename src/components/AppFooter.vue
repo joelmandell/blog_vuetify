@@ -30,5 +30,5 @@
       icon: `mdi-github`,
       href: 'https://github.com/joelmandell/',
     },
-    ]
+  ]
 </script>

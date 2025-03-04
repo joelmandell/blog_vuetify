@@ -3,15 +3,16 @@
       v-model="model"    
       :persistent="props?.persistent ?? false"
       :max-width="props?.dialogWidth ?? null"
+      :fullscreen="props?.fullscreen ?? false"
     >
     <v-card>
-        <component v-if="currentComp != null" :is="currentComp" v-bind="{actionHide:()=> model = false, ...props}"></component>
+        <component v-if="currentComponent != null" :is="currentComponent" v-bind="{actionHide:()=> model = false, ...props}"></component>
     </v-card>
     </v-dialog>
 </template>
 <script setup lang="ts">
-const model = defineModel<boolean>();
-const {component, props} = defineProps(["component","props"]);
+const model = defineModel<boolean>()
+const {component, props} = defineProps(["component","props"])
 
-const currentComp = computed(() => component);
+const currentComponent = computed(() => component)
 </script>

@@ -1,16 +1,16 @@
 // src/stores/blog.ts
-import { defineStore } from 'pinia';
-import { useAppStore } from '@/stores/app';
+import { defineStore } from 'pinia'
+import { useAppStore } from '@/stores/app'
 
-const BLOG_STORE_KEY='blogArticles';
+const BLOG_STORE_KEY='blogArticles'
 
 function generateUuidV4(): string {
     // Generate a random hexadecimal string of the required length
     const randomHex = (length: number): string => {
       return Array.from({ length }, () =>
         Math.floor(Math.random() * 16).toString(16)
-      ).join('');
-    };
+      ).join('')
+    }
   
     // UUID v4 format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
     // x = random hexadecimal digit
@@ -26,7 +26,7 @@ function generateUuidV4(): string {
       randomHex(3) +
       '-' +
       randomHex(12)
-    );
+    )
   }
 
 export const useBlogArticleStore = defineStore(BLOG_STORE_KEY, {
@@ -36,41 +36,41 @@ export const useBlogArticleStore = defineStore(BLOG_STORE_KEY, {
 
   actions: {
     addArticle(article : BlogArticle) {
-      this.blogArticles.push({ ...article, id: generateUuidV4() });
+      this.blogArticles.push({ ...article, id: generateUuidV4() })
     },
 
     getArticles() {
-      return this.blogArticles;
+      return this.blogArticles
     },
 
     updateArticle(updatedArticle: BlogArticle) {
-      const index = this.blogArticles.findIndex(article => article.id === updatedArticle.id);
+      const index = this.blogArticles.findIndex(article => article.id === updatedArticle.id)
       if (index !== -1) {
-        this.blogArticles[index] = updatedArticle;
+        this.blogArticles[index] = updatedArticle
       }
     },
 
     async deleteArticle({title,id}: BlogArticle) {
-      const appStore = useAppStore();
+      const appStore = useAppStore()
       const result = (await appStore.showDialog("../components/ConfirmDialog", 
             { title:"Deleting blog article", 
               text:`Do you really want to delete the blog article with name "${title}"?`, 
               persistent:true,
               dialogWidth:400,
-            }, true)) as boolean;
+            }, true)) as boolean
 
       if(result) {
-        this.blogArticles = this.blogArticles.filter(article => article.id !== id);
+        this.blogArticles = this.blogArticles.filter(article => article.id !== id)
       }
     },
   },
 
   getters: {
     getArticleById: (state) => (id: string) => {
-      return state.blogArticles.find(article => article.id === id);
+      return state.blogArticles.find(article => article.id === id)
     },
   },
-});
+})
 
 useBlogArticleStore().$subscribe((mutation, state) => {
     // persist the whole state to the local storage whenever it changes

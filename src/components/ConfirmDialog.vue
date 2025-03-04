@@ -8,10 +8,10 @@
 </template>
 <script setup lang="ts">
 const attrs = useAttrs()
-let {resolverFunction} = attrs;
+let {resolverFunction} = attrs
 
 const confirm = (value: boolean) => {
     if(resolverFunction instanceof Function)
-        resolverFunction(value);
+        resolverFunction(value)
 }
 </script>

@@ -2,7 +2,7 @@
   <v-responsive class="border rounded">
     <v-app>
       <v-app-bar title="Cat blog with Vuetify">
-        <v-btn @click="appStore.showDialog('../components/BlogCreate')" elevation="10" color="primary">
+        <v-btn @click="appStore.showDialog('../components/BlogCreate',{fullscreen:mobile, dialogWidth:480})" elevation="10" color="primary">
           <v-icon >mdi-plus</v-icon>
           New blog article
         </v-btn>
@@ -19,10 +19,12 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia'
-  import { useAppStore } from '@/stores/app';
-  
-  const appStore = useAppStore();
-  const {componentInUse} = storeToRefs(appStore);
-  const component = computed(() => appStore.getCurrentComponent());
+  import { useAppStore } from '@/stores/app'
+  import { useDisplay } from 'vuetify'
+
+  const { mobile } = useDisplay() 
+  const appStore = useAppStore()
+  const {componentInUse} = storeToRefs(appStore)
+  const component = computed(() => appStore.getCurrentComponent())
   const props = computed(() => appStore.props)
 </script>

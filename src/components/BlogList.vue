@@ -15,23 +15,26 @@
 </v-row>
 </template>
 <script setup lang="ts">
-import { useBlogArticleStore } from '@/stores/blog';
-import { useAppStore } from '@/stores/app';
+import { useBlogArticleStore } from '@/stores/blog'
+import { useAppStore } from '@/stores/app'
+import { useDisplay } from 'vuetify'
 import BlogArticleComponent from '@/components/BlogArticle'
+
+const { mobile } = useDisplay()
 
 const {ListArticles} = defineProps({
   ListArticles: Boolean
 })
 
-const appStore = useAppStore();
-const articleStore = useBlogArticleStore();
+const appStore = useAppStore()
+const articleStore = useBlogArticleStore()
 
 const editArticle = (article: BlogArticle) => {
-    appStore.showDialog("../components/BlogEdit",{article})
+    appStore.showDialog("../components/BlogEdit",{article,fullscreen:mobile.value,dialogWidth:480})
 }
 
 const deleteArticle = (article: BlogArticle) => {
-  articleStore.deleteArticle(article);
-};
+  articleStore.deleteArticle(article)
+}
 const model = defineModel<BlogArticle[]>()
 </script>

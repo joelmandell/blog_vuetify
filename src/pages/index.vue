@@ -4,10 +4,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
-import { useBlogArticleStore } from '@/stores/blog';
-import type { BlogArticle } from '@/types'; // Import types
+import { computed } from 'vue'
+import { useBlogArticleStore } from '@/stores/blog'
 
-const articleStore = useBlogArticleStore();
-const articles = computed(() => articleStore.getArticles());
+const articleStore = useBlogArticleStore()
+const articles = computed(() => articleStore.getArticles())
 </script>

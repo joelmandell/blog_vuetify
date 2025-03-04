@@ -1,5 +1,6 @@
 // src/stores/blog.ts
 import { defineStore } from 'pinia';
+import { useAppStore } from '@/stores/app';
 
 const BLOG_STORE_KEY='blogArticles';
 
@@ -49,8 +50,18 @@ export const useBlogArticleStore = defineStore(BLOG_STORE_KEY, {
       }
     },
 
-    deleteArticle(articleId: string) {
-      this.blogArticles = this.blogArticles.filter(article => article.id !== articleId);
+    async deleteArticle({title,id}: BlogArticle) {
+      const appStore = useAppStore();
+      const result = (await appStore.showDialog("../components/ConfirmDialog", 
+            { title:"Deleting blog article", 
+              text:`Do you really want to delete the blog article with name "${title}"?`, 
+              persistent:true,
+              dialogWidth:400,
+            }, true)) as boolean;
+
+      if(result) {
+        this.blogArticles = this.blogArticles.filter(article => article.id !== id);
+      }
     },
   },
 

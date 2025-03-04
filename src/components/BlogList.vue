@@ -1,20 +1,16 @@
 <template>
  <v-row>
   <v-col cols="12">
-    <v-card>
-      <v-card-title class="headline">Blog Articles</v-card-title>
-      <v-card-text>
+
           <!--I reckon there could be an option prop to decide wich component to use like cardlist or expanded list and so on.... for now just a simple bool ListArticles-->
           <template v-if="ListArticles" :key="item.id" v-for="item in model">
               <BlogArticleComponent :article="item">
                 <template #actions>
                   <v-btn color="primary" @click="editArticle(item)">Edit <v-icon>mdi-pen</v-icon></v-btn>
-                  <v-btn color="secondary" @click="deleteArticle(item.id)">Delete <v-icon>mdi-delete</v-icon></v-btn>
+                  <v-btn color="secondary" @click="deleteArticle(item)">Delete <v-icon>mdi-delete</v-icon></v-btn>
                 </template>
               </BlogArticleComponent>
           </template>
-      </v-card-text>
-    </v-card>
   </v-col>
 </v-row>
 </template>
@@ -34,8 +30,8 @@ const editArticle = (article: BlogArticle) => {
     appStore.showDialog("../components/BlogEdit",{article})
 }
 
-const deleteArticle = (id: string) => {
-  articleStore.deleteArticle(id);
+const deleteArticle = (article: BlogArticle) => {
+  articleStore.deleteArticle(article);
 };
 const model = defineModel<BlogArticle[]>()
 </script>

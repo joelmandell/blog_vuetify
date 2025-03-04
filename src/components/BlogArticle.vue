@@ -41,12 +41,11 @@ import { defineProps } from 'vue';
 
 const {article} = defineProps(["article"])
 const image = ref<string|undefined>(undefined);
-const isIntersecting = ref<boolean>(false);
 
 async function fetchCatImage() {
     try {
         const apiKey = 'live_jJP9YtrzCCExi84VcEjMhuEIKa8tB0suoAe6t1vgkzbFevLXZojHZJnjaq06xGr8';
-        const apiUrl =  '' //'https://api.thecatapi.com/v1/images/search';
+        const apiUrl =  'https://api.thecatapi.com/v1/images/search';
 
         const response = await fetch(apiUrl, {
             headers: {
@@ -71,7 +70,6 @@ async function fetchCatImage() {
 const onIntersect = async (intersecting: boolean, entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     //Fetch if interseting and if image is not already set.
     if(intersecting && (image.value == undefined)) image.value = await fetchCatImage();
-    isIntersecting.value = entries[0].intersectionRatio >= 0.5
 }
 
 const formatDate = (date: Date | string) => {

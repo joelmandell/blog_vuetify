@@ -2,6 +2,7 @@
   <v-dialog
       v-model="model"    
       :persistent="props?.persistent ?? false"
+      :max-width="props?.dialogWidth ?? null"
     >
     <v-card>
         <component v-if="currentComp != null" :is="currentComp" v-bind="{actionHide:()=> model = false, ...props}"></component>

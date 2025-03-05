@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12">
       <!--I reckon there could be an option prop to decide wich component to use like cardlist or expanded list and so on.... for now just a simple bool ListArticles-->
-      <template v-if="ListArticles && (model?.length ?? 0) > 0" v-memo :key="item.id" v-for="item in model">
+      <template v-if="ListArticles && (model?.length ?? 0) > 0" :key="item.id" v-for="item in model">
           <BlogArticleComponent :visibleTextLength="150" :article="item">
             <template #actions>
               <v-btn color="primary" :to="`/article?id=${item.id}`"><v-icon>mdi-newspaper-variant-outline</v-icon> Read</v-btn>

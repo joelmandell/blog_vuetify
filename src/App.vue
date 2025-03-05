@@ -1,5 +1,5 @@
 <template>
-  <v-responsive class="border rounded">
+  <v-responsive class="border rounded" v-once>
     <v-app>
       <v-app-bar>
         <v-toolbar-title><v-btn variant="plain" to="/">Cat blog with Vuetify</v-btn></v-toolbar-title>

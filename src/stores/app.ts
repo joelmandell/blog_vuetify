@@ -8,9 +8,9 @@ export const useAppStore = defineStore(APP_STORE_KEY, {
   state: () => {
     return ({
       componentInUse:false,
-      currentComponent: null,
+      currentComponent: null as AsyncComponentLoader | null,
       props:{},
-      cachedModules: {} as any,
+      cachedModules: {} as {[key: string] : AsyncComponentLoader},
       allModules: null as any,
     })
   },
@@ -24,7 +24,7 @@ export const useAppStore = defineStore(APP_STORE_KEY, {
       if(!this.cachedModules[type])
       {
         const moduleToUse = this.allModules[path]
-        this.cachedModules[type] = markRaw(defineAsyncComponent(() => moduleToUse() as any | null) as AsyncComponentLoader) 
+        this.cachedModules[type] = markRaw(defineAsyncComponent(() => moduleToUse() as any | null) as AsyncComponentLoader)
       }    
 
       this.currentComponent = this.cachedModules[type] 

@@ -4,9 +4,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computedAsync } from '@vueuse/core'
 import { useBlogArticleStore } from '@/stores/blog'
 
-const articleStore = useBlogArticleStore()
-const articles = computed(() => articleStore.getArticles())
+const articleStore = await useBlogArticleStore()
+const articles = await computedAsync(async () => await articleStore.getArticles())
+console.log(articles.value)
 </script>

@@ -56,7 +56,7 @@ import { useBlogArticleStore } from '@/stores/blog'
 import { VForm } from 'vuetify/components'
 
 const attrs = useAttrs()
-const articleStore = useBlogArticleStore()
+const articleStore = await useBlogArticleStore()
 const actionHide = attrs["actionHide"] as Function
 
 const titleRules = [

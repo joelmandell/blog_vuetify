@@ -10,7 +10,9 @@
       </v-app-bar>
       <v-main>
         <v-container fluid>
+          <Suspense>
           <router-view />
+        </Suspense>
         </v-container>
       </v-main>
     </v-app>

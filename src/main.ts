@@ -6,7 +6,8 @@
 
 // Plugins
 import { registerPlugins } from '@/plugins'
-
+import { BlogServiceKey } from "@/symbols";
+import { BlogLocalStorageService } from '@/services/BlogLocalStorageService';
 // Components
 import App from './App.vue'
 
@@ -14,6 +15,7 @@ import App from './App.vue'
 import { createApp } from 'vue'
 
 const app = createApp(App)
+app.provide("hello", new BlogLocalStorageService());
 
 registerPlugins(app)
 

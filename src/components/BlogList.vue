@@ -39,8 +39,8 @@ const editArticle = (article: BlogArticle) => {
     appStore.showDialog("BlogEdit",{article,fullscreen:mobile.value,dialogWidth:480})
 }
 
-const deleteArticle = (article: BlogArticle) => {
-  articleStore.deleteArticle(article)
+const deleteArticle = async (article: BlogArticle) => {
+  (await articleStore).deleteArticle(article);
 }
 const model = defineModel<BlogArticle[]>()
 </script>

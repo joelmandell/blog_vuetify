@@ -1,6 +1,8 @@
 // src/stores/blog.ts
 import { defineStore } from 'pinia'
 import { useAppStore } from '@/stores/app'
+import { BlogServiceKey } from "@/symbols";
+import type { IBlogService } from "@/interfaces/IBlogService";
 
 const BLOG_STORE_KEY='blogArticles'
 
@@ -29,54 +31,77 @@ function generateUuidV4(): string {
     )
   }
 
-export const useBlogArticleStore = defineStore(BLOG_STORE_KEY, {
-  state: () => ({
-    blogArticles: JSON.parse(localStorage.getItem(BLOG_STORE_KEY) ?? "[]") as BlogArticle[],
-  }),
+  export const useBlogArticleStore = defineStore(BLOG_STORE_KEY, async () => {
+    // State
+    const blogArticles = ref<BlogArticle[]>([]);
+    const dataService = inject("hello") as IBlogService;
 
-  actions: {
-    addArticle(article : BlogArticle) {
-      this.blogArticles.push({ ...article, id: generateUuidV4() })
-    },
-
-    getArticle(id:string | undefined) : BlogArticle | undefined {
-      return this.blogArticles.find((item: BlogArticle) => item.id == id)
-    },
-
-    getArticles() {
-      return this.blogArticles
-    },
-
-    updateArticle(updatedArticle: BlogArticle) {
-      const index = this.blogArticles.findIndex(article => article.id === updatedArticle.id)
+    // Initialize the store by fetching articles
+    const initialize = async () => {
+      blogArticles.value = await dataService.getArticles();
+    };
+  
+    // Actions
+    const addArticle = (article: BlogArticle) => {
+      const newArticle = { ...article, id: generateUuidV4() };
+      dataService.addArticle(newArticle);
+      blogArticles.value.push(newArticle); // Update local state
+    };
+  
+    const getArticle = async (id: string | undefined): Promise<BlogArticle | undefined> => {
+      return await dataService.getArticle(id);
+    };
+  
+    const getArticles  = async () : Promise<BlogArticle[]> => {
+      const da = await dataService.getArticles();
+      console.log("DA",da)
+      return da;
+    } 
+  
+    const updateArticle = (updatedArticle: BlogArticle) => {
+      const index = blogArticles.value.findIndex((article) => article.id === updatedArticle.id);
       if (index !== -1) {
-        this.blogArticles[index] = updatedArticle
+        blogArticles.value[index] = updatedArticle;
+        dataService.updateArticle(updatedArticle); // Assuming dataService has an update method
       }
-    },
-
-    async deleteArticle({title,id}: BlogArticle | undefined = {title:"",id:"",author:"",date:undefined, text:""}) {
-      const appStore = useAppStore()
-      const result = (await appStore.showDialog("ConfirmDialog", 
-                        { title:"Deleting blog article", 
-                          text:`Do you really want to delete the blog article with name "${title}"?`, 
-                          persistent:true,
-                          dialogWidth:400,
-                        }, true)) as boolean
-
-      if(result) {
-        this.blogArticles = this.blogArticles.filter(article => article.id !== id)
+    };
+  
+    const deleteArticle = async (article: BlogArticle | undefined = { title: '', id: '', author: '', date: undefined, text: '' }) => {
+      const appStore = useAppStore();
+      const result = (await appStore.showDialog('ConfirmDialog', {
+        title: 'Deleting blog article',
+        text: `Do you really want to delete the blog article with name "${article.title}"?`,
+        persistent: true,
+        dialogWidth: 400,
+      })) as boolean;
+  
+      if (result) {
+        await dataService.deleteArticle(article);
+        blogArticles.value = blogArticles.value.filter((a) => a.id !== article.id); // Update local state
       }
-    },
-  },
+    };
+  
+    // Getters
+    const getArticleById = computed(() => (id: string) => {
+      return blogArticles.value.find((article) => article.id === id);
+    });
+  
+    // Initialize the store when it's created
+    await initialize();
+  
+    return {
+      blogArticles,
+      addArticle,
+      getArticle,
+      getArticles,
+      updateArticle,
+      deleteArticle,
+      getArticleById,
+    };
+  });
 
-  getters: {
-    getArticleById: (state) => (id: string) => {
-      return state.blogArticles.find(article => article.id === id)
-    },
-  },
-})
-
-useBlogArticleStore().$subscribe((mutation, state) => {
+useBlogArticleStore().$subscribe(async (mutation, state) => {
     // persist the whole state to the local storage whenever it changes
-    localStorage.setItem(BLOG_STORE_KEY, JSON.stringify(state.blogArticles))
+    console.log(state)
+    // dataService.blogArticles = (await state)
 })

@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import BlogArticleComponent from '@/components/BlogArticle.vue'
 import {useRoute,useRouter} from 'vue-router'
-import { computed } from 'vue'
+import { computedAsync } from '@vueuse/core'
 import { useBlogArticleStore } from '@/stores/blog'
 import { useAppStore } from '@/stores/app'
 import { useDisplay } from 'vuetify'
@@ -23,8 +23,8 @@ const router = useRouter()
 
 const id = ref<string|undefined>(route.query?.id?.toString())
 
-const articleStore = useBlogArticleStore()
-const article = computed<BlogArticle|undefined>(() => articleStore.getArticle(id.value))
+const articleStore = await useBlogArticleStore()
+const article = computedAsync<BlogArticle|undefined>(async () => await articleStore.getArticle(id.value))
 
 const editArticle = (article: BlogArticle | undefined) => {
     appStore.showDialog("BlogEdit",{article,fullscreen:mobile.value,dialogWidth:480})

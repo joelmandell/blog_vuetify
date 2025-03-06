@@ -1,12 +1,20 @@
-import BlogArticle from "@/components/BlogArticle.vue";
 import type { IBlogService } from "@/interfaces/IBlogService"
 
+const BLOG_STORE_KEY='blogArticles'
+
 export class BlogLocalStorageService implements IBlogService {
-    private _blogArticles : BlogArticle[] = [];
+
+    public get blogArticles(): BlogArticle[] {
+        return JSON.parse(localStorage.getItem(BLOG_STORE_KEY) ?? "[]") as BlogArticle[]
+    }
+
+    set blogArticles(articles: BlogArticle[]) {
+        localStorage.setItem(BLOG_STORE_KEY, JSON.stringify(articles))
+    }
 
     addArticle(article: BlogArticle): boolean {
         try {
-            this._blogArticles.push(article);
+            this.blogArticles.push(article);
             return true;
         } catch {
 
@@ -15,14 +23,15 @@ export class BlogLocalStorageService implements IBlogService {
         return false;
     }
     async getArticles(): Promise<BlogArticle[]> {
-        return this._blogArticles;
+        console.log(this.blogArticles)
+        return await this.blogArticles;
     }
-    async getArticle(id: string): Promise<BlogArticle|undefined> {
-        return this._blogArticles.find((blog) => blog.id === id)
+    async getArticle(id: string | undefined): Promise<BlogArticle|undefined> {
+        return this.blogArticles.find((blog) => blog.id === id)
     }
     async deleteArticle(article: BlogArticle): Promise<boolean> {
         try {
-            this._blogArticles = this._blogArticles.filter((blog) => blog.id != article.id);
+            this.blogArticles = this.blogArticles.filter((blog) => blog.id != article.id);
         } catch {
             
         }

@@ -76,7 +76,7 @@ const dateRules = [
 const form = ref<VForm | null>(null)
 const validForm = ref(true)
 const attrs = useAttrs()
-const articleStore = useBlogArticleStore()
+const articleStore = await useBlogArticleStore()
 
 const actionHide = attrs["actionHide"] as Function
 
